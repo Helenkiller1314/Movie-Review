@@ -1,13 +1,14 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
-
+  before_action :find_movie_and_check_favorite, only: [:new, :create]
   def new
-    @movie = Movie.find(params[:movie_id])
+
     @review = Review.new
   end
 
   def create
-    @movie = Movie.find(params[:movie_id])
+
+
     @review = Review.new(review_params)
     @review.movie = @movie
     @review.user = current_user
@@ -23,5 +24,15 @@ class ReviewsController < ApplicationController
 
   def review_params
     params.require(:review).permit(:content)
+  end
+end
+
+
+
+
+def find_movie_and_check_favorite
+  @movie = Movie.find(params[:movie_id])
+  if !current_user.is_member_of?(@movie)
+    redirect_to movie_path(@movie), alert: "You have no permission!"
   end
 end
