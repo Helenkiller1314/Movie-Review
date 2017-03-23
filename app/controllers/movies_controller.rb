@@ -30,6 +30,8 @@ class MoviesController < ApplicationController
 
   end
 
+
+
   def update
 
 
@@ -45,6 +47,35 @@ class MoviesController < ApplicationController
     @movie.destroy
     redirect_to movies_path, alert: "Movie Deleted!"
   end
+
+
+  def favorite
+   @movie = Movie.find(params[:id])
+
+    if !current_user.is_member_of?(@movie)
+      current_user.favorite!(@movie)
+      flash[:notice] = "收藏成功！"
+    else
+      flash[:warning] = "你已经收藏过了！"
+    end
+
+    redirect_to movie_path(@movie)
+  end
+
+  def unfavorite
+    @movie = Movie.find(params[:id])
+
+    if current_user.is_member_of?(@movie)
+      current_user.unfavorite!(@movie)
+      flash[:alert] = "已退出收藏！"
+    else
+      flash[:warning] = "你没收藏这个电影，怎么退订 XD"
+    end
+
+    redirect_to movie_path(@movie)
+  end
+
+
 
   private
 
