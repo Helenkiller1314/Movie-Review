@@ -7,6 +7,10 @@ class MoviesController < ApplicationController
     @movie = Movie.new
   end
 
+  def show
+    @movie = Movie.find(params[:id])
+  end
+
   def create
     @movie = Movie.new(movie_params)
     @movie.save
