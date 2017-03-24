@@ -1,0 +1,44 @@
+<div class="col-md-12">
+  <div class="movie">
+
+    <span class="pull-right">
+      <% if current_user && current_user.is_member_of?(@movie) %>
+      <label class="label label-success"> 已收藏 </label>
+       <%= link_to("Unfavorite Movie", unfavorite_movie_path(@movie), method: :post, class: "btn btn-default") %>
+      <% else %>
+      <label class="label label-warning">未收藏</label>
+      <%= link_to("Favorite Movie", favorite_movie_path(@movie), method: :post, class: "btn btn-default") %>
+      <% end %>
+    </span>
+    <%= link_to("Write a Review", new_movie_review_path(@movie), class: "btn btn-default pull-right")%>
+    <% if current_user && current_user == @movie.user %>
+    <%= link_to("Edit", edit_movie_path(@movie), class: "btn btn-primary pull-right")%>
+    <% end %>
+  </div>
+  <h2><%= @movie.title %></h2>
+  <p><%= @movie.description %></p>
+
+  <table class="table">
+    <thead>
+     <tr>
+        <th>影评内容</th>
+        <th>发表者</th>
+        <th>发表时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @reviews.each do |review| %>
+        <tr>
+          <td><%= review.content %></td>
+          <td><%= review.user.email %></td>
+          <td><%= review.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="text-center">
+    <%= will_paginate @reviews%>
+  </div>
+
+</div>
