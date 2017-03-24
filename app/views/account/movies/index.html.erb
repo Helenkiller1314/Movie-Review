@@ -1,0 +1,28 @@
+<div class="col-md-12">
+
+  <h2 class="text-center"> 我发布的电影 </h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th> # </th>
+        <th> 影片名 </th>
+        <th> 内容简介 </th>
+        <th> 影评数 </th>
+        <th> 发布时间 </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @movies.each do |movie| %>
+        <tr>
+          <td> # </td>
+          <td> <%= link_to(movie.title, movie_path(movie)) %> </td>
+          <td> <%= movie.description %> </td>
+          <td> <%= movie.reviews.count %> </td>
+          <td> <%= movie.updated_at %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
